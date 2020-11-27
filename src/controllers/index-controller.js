@@ -17,16 +17,22 @@ exports.proximo = (request, response) => {
     let id = request.query.id || null;
     let sim = request.query.sim || null;
     let nao = request.query.nao || null;
-
+    let ref = request.query.ref || null;
     console.log(`id: ${id}`);
-
-    const option = request.query.option || null;
+    let option = request.query.option || null;
 
     if(option == 's'){
         id = sim;
     } else if(option == 'n') {
         id = nao;
     }
+
+    console.log(`id: ${id}`);
+
+    // acertou ?
+    if( !id && ref && option == 's' ){
+        return response.redirect('/acertei')                
+    }    
     
     if(id === null ){
         db.get('SELECT * FROM pratos order by id limit 1', [], (err, row) => {
@@ -40,7 +46,8 @@ exports.proximo = (request, response) => {
                 id: row.id || null,
                 sim: row.s || null,
                 nao: row.n || null,
-                prato: row.prato || null
+                prato: row.prato || null,
+                ref: row.ref || null
             })        
         });
     } else {
@@ -48,14 +55,15 @@ exports.proximo = (request, response) => {
             if (err) {
                 return console.error(err.message);        
             }
-            
+          
             return response.render('main/proximo', {
                 title: "Start",
                 layout: 'layouts/default',
                 id: row.id || null,
                 sim: row.s || null,
                 nao: row.n || null,
-                prato: row.prato || null
+                prato: row.prato || null,
+                ref: row.ref || null
             })        
         });
 
