@@ -13,7 +13,7 @@ exports.index = (request, response) => {
 
 exports.proximo = (request, response) => {
 
-    let id = request.query.id || 0;
+    let id = request.query.id || null;
     let sim = request.query.sim || null;
     let nao = request.query.nao || null;
 
@@ -27,7 +27,7 @@ exports.proximo = (request, response) => {
         id = nao;
     }
     
-    if(id === 0 ){
+    if(id === null ){
         db.get('SELECT * FROM pratos order by id limit 1', [], (err, row) => {
             if (err) {
                 return console.error(err.message);        
@@ -37,8 +37,8 @@ exports.proximo = (request, response) => {
                 title: "Start",
                 layout: 'layouts/default',
                 id: row.id || null,
-                sim: row.S || null,
-                nao: row.N || null,
+                sim: row.s || null,
+                nao: row.n || null,
                 prato: row.prato || null
             })        
         });
@@ -52,8 +52,8 @@ exports.proximo = (request, response) => {
                 title: "Start",
                 layout: 'layouts/default',
                 id: row.id || null,
-                sim: row.S || null,
-                nao: row.N || null,
+                sim: row.s || null,
+                nao: row.n || null,
                 prato: row.prato || null
             })        
         });
