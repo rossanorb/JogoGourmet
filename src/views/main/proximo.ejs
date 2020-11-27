@@ -1,0 +1,25 @@
+<%- contentFor('body') %>
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-7 text-center" style="margin-top: 30vh;">
+        <div class="jumbotron">
+            <!-- <%= id %> -->
+            <h3>O prato que você pensou é <%= prato %> ?</h3>
+        </div>
+        
+        <!-- <a href="/" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">OK</a> -->
+        <form action="/proximo" method="GET" name="proximo">
+            <div class="form-group">
+                <input type="text" class="form-control" id="id" value="<%= id %>" name="id">
+                <input type="text" class="form-control" id="sim" value="<%= sim %>" name="sim">
+                <input type="text" class="form-control" id="nao" value="<%= nao %>" name="nao">
+                <input type="text" class="form-control" id="option" value="" name="option">
+            </div>
+                        
+            <button type="button" id="s" class="btn btn-primary btn-lg btn-block">SIM</button>
+            <button type="button" id="n" class="btn btn-danger btn-lg btn-block">NÃO</button>
+        </form>
+        
+    </div>
+</div>
+

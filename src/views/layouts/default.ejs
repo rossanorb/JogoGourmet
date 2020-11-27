@@ -7,6 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript">
+          window.onload = function(){
+            document.getElementById('s').addEventListener('click', function(){                
+                document.getElementById('option').value = this.id;
+                document.querySelector("form[name=proximo]").submit();
+            });
+
+            document.getElementById('n').addEventListener('click', function(){                
+                document.getElementById('option').value = this.id;
+                document.querySelector("form[name=proximo]").submit();
+            });
+        }
+    </script>    
 </head>
 
 <body>    
