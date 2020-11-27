@@ -1,4 +1,5 @@
 var sqlite3 = require('sqlite3').verbose()
+const { request, response } = require('express')
 const db = require("./../database")
 
 
@@ -61,4 +62,11 @@ exports.proximo = (request, response) => {
     }
     
  
+}
+
+exports.acertei = (request, response) => {
+    return response.render('main/acertei', {        
+        layout: 'layouts/default'        
+    })     
+
 }
