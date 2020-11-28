@@ -1,15 +1,13 @@
-var sqlite3 = require('sqlite3').verbose()
-const { request, response } = require('express')
 const db = require("./../database")
 
 
 exports.index = (request, response) => {
-    
+
     return response.render('main/start', {
         title: "Start",
-        layout: 'layouts/default'        
-    })    
-    
+        layout: 'layouts/default'
+    })
+
 }
 
 exports.proximo = (request, response) => {
@@ -18,33 +16,32 @@ exports.proximo = (request, response) => {
     let sim = request.query.sim || null;
     let nao = request.query.nao || null;
     let ref = request.query.ref || null;
-    console.log(`id: ${id}`);
     let option = request.query.option || null;
 
-    if(option == 's'){
+    if (option == 's') {
         id = sim;
-    } else if(option == 'n') {
+    } else if (option == 'n') {
         id = nao;
     }
 
     console.log(`id: ${id}`);
 
     // acertou ?
-    if( !id && ref && option == 's' ){
+    if (!id && ref && option == 's') {
         return response.redirect('/acertei')
     }
 
-    // cria novo
-    if( ref && option == 'n'){
+    // cria novo    
+    if (!id && ref && option == 'n') {
         return response.redirect(`/novo-prato?id=${request.query.id}`)
-    }    
-   
-    if(id === null ){
+    }
+
+    if (id === null) {
         db.get('SELECT * FROM pratos order by id limit 1', [], (err, row) => {
             if (err) {
-                return console.error(err.message);        
+                return console.error(err.message);
             }
-            
+
             return response.render('main/proximo', {
                 title: "Start",
                 layout: 'layouts/default',
@@ -53,14 +50,14 @@ exports.proximo = (request, response) => {
                 nao: row.n || null,
                 prato: row.prato || null,
                 ref: row.ref || null
-            })        
+            })
         });
     } else {
         db.get('SELECT * FROM pratos where id = ?', [id], (err, row) => {
             if (err) {
-                return console.error(err.message);        
+                return console.error(err.message);
             }
-          
+
             return response.render('main/proximo', {
                 title: "Start",
                 layout: 'layouts/default',
@@ -69,17 +66,17 @@ exports.proximo = (request, response) => {
                 nao: row.n || null,
                 prato: row.prato || null,
                 ref: row.ref || null
-            })        
+            })
         });
     }
- 
+
 }
 
-exports.novoPrato = (request, response) => {    
+exports.novoPrato = (request, response) => {
     return response.render('main/novoPrato', {
         layout: 'layouts/default',
         cid: request.query.id
-    })   
+    })
 }
 
 exports.novaOpcao = (request, response) => {
@@ -87,16 +84,16 @@ exports.novaOpcao = (request, response) => {
 
     db.get('SELECT * FROM pratos where id = ?', [cid], (err, row) => {
         if (err) {
-            return console.error(err.message);        
-        }        
-      
+            return console.error(err.message);
+        }
+
         return response.render('main/novaOpcao', {
             layout: 'layouts/default',
             cprato: row.prato,
             ref: row.ref,
             optref: row.optref,
             cid: request.query.cid,
-            nome_prato: request.query.nome_prato            
+            nome_prato: request.query.nome_prato
         });
 
     });
@@ -109,37 +106,42 @@ exports.save = (request, response) => {
     let ref = request.body.ref;
     let optref = request.body.optref;
     let cid = request.body.cid;
-  
-    db.run('INSERT INTO pratos (prato, n, s, ref, optref) VALUES (?, ?, ?, ?, ?)', [opcao, cid, null, ref, optref], function(err) {
+    
+    db.run('INSERT INTO pratos (prato, n, s, ref, optref) VALUES (?, ?, ?, ?, ?)', [opcao, cid, null, ref, optref], function (err) {
         if (err) {
             return console.log(err.message);
         }
 
-        let idOption = this.lastID;        
-           
+        let idOption = this.lastID;
+
         db.run('UPDATE pratos SET ref = ?, optref = ? WHERE id = ?', [idOption, 'n', cid]);
 
-        db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [nome_prato, null, null, idOption], function(err) {
+        db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [nome_prato, null, null, idOption], function (err) {
             if (err) {
                 return console.log(err.message);
             }
-            
+
             let pratoId = this.lastID;
-            db.run('UPDATE pratos SET s = ? WHERE id = ?', [pratoId, idOption]);
+            db.run('UPDATE pratos SET s = ? WHERE id = ? ', [pratoId, idOption]);
 
         });
+        
+        let sql = '';
+        if (optref == 's') {
+            sql = 'UPDATE pratos SET s = ? WHERE id = ? ';
+        } else {
+            sql = 'UPDATE pratos SET n = ? WHERE id = ? ';
+        }
 
-
-        db.run(`UPDATE pratos SET ${optref} = ? WHERE id = ? `, [idOption, ref]);
+        db.run(sql, [idOption, ref]);
 
         return response.redirect('/')
     });
-    
+
 }
 
 exports.acertei = (request, response) => {
     return response.render('main/acertei', {
-        layout: 'layouts/default'        
-    })     
-
+        layout: 'layouts/default'
+    })
 }
