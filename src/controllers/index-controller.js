@@ -132,10 +132,9 @@ exports.save = (request, response) => {
 
         db.run(`UPDATE pratos SET ${optref} = ? WHERE id = ? `, [idOption, ref]);
 
-
+        return response.redirect('/')
     });
     
-    return response.redirect('/')
 }
 
 exports.acertei = (request, response) => {
