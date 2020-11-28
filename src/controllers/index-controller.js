@@ -112,14 +112,25 @@ exports.save = (request, response) => {
         if (err) {
             return console.log(err.message);
         }
-        // get the last insert id
-        console.log(`A row has been inserted with rowid ${this.lastID}`);
-        let idOption = this.lastID;
+
+        let idOption = this.lastID;        
 
         // altera referencia de Lasanha para italiano        
-        db.run('UPDATE pratos SET ref = ? WHERE id = ?', [idOption, cid]);    
-        
+        db.run('UPDATE pratos SET ref = ? WHERE id = ?', [idOption, cid]);
 
+        db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [nome_prato, null, null, idOption], function(err) {
+            if (err) {
+                return console.log(err.message);
+            }
+            
+            let pratoId = this.lastID;
+            console.log(`A row has been inserted with id ${pratoId}`);
+            db.run('UPDATE pratos SET s = ? WHERE id = ?', [pratoId, idOption]);
+
+        });
+
+
+        db.run('UPDATE pratos SET s = ? WHERE id = ?', [pratoId, ref]);
 
 
     });
