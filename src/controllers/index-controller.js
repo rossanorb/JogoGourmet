@@ -116,8 +116,7 @@ exports.save = (request, response) => {
         }
 
         let idOption = this.lastID;        
-
-        // altera referencia de Lasanha para italiano        
+           
         db.run('UPDATE pratos SET ref = ?, optref = ? WHERE id = ?', [idOption, 'n', cid]);
 
         db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [nome_prato, null, null, idOption], function(err) {
