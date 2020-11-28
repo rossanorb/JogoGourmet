@@ -94,6 +94,7 @@ exports.novaOpcao = (request, response) => {
             layout: 'layouts/default',
             cprato: row.prato,
             ref: row.ref,
+            optref: row.optref,
             cid: request.query.cid,
             nome_prato: request.query.nome_prato            
         });
