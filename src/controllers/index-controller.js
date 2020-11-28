@@ -134,12 +134,8 @@ exports.save = (request, response) => {
 
 
     });
-
-    return response.render('main/acertei', {
-        layout: 'layouts/default'        
-    })
-
-    // return response.redirect('/')
+    
+    return response.redirect('/')
 }
 
 exports.acertei = (request, response) => {
