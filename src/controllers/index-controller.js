@@ -31,9 +31,14 @@ exports.proximo = (request, response) => {
 
     // acertou ?
     if( !id && ref && option == 's' ){
-        return response.redirect('/acertei')                
+        return response.redirect('/acertei')
+    }
+
+    // cria novo
+    if( ref && option == 'n'){
+        return response.redirect(`/novo-prato?id=${request.query.id}`)
     }    
-    
+   
     if(id === null ){
         db.get('SELECT * FROM pratos order by id limit 1', [], (err, row) => {
             if (err) {
@@ -66,10 +71,36 @@ exports.proximo = (request, response) => {
                 ref: row.ref || null
             })        
         });
-
     }
-    
  
+}
+
+exports.novoPrato = (request, response) => {    
+    return response.render('main/novoPrato', {
+        layout: 'layouts/default',
+        cid: request.query.id
+    })   
+}
+
+exports.novaOpcao = (request, response) => {
+    let cid = request.query.cid;
+
+    db.get('SELECT * FROM pratos where id = ?', [cid], (err, row) => {
+        if (err) {
+            return console.error(err.message);        
+        }        
+      
+        return response.render('main/novaOpcao', {
+            layout: 'layouts/default',
+            cprato: row.prato,
+            nome_prato: request.query.nome_prato            
+        });
+
+    });
+}
+
+exports.save = (request, response) => {
+    return response.redirect('/')
 }
 
 exports.acertei = (request, response) => {

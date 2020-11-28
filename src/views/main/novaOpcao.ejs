@@ -1,0 +1,15 @@
+<%- contentFor('body') %>
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-7 text-center" style="margin-top: 30vh;">
+        <div class="jumbotron">
+            <h3><%= nome_prato %> é ___ mas <%= cprato %> não é</h3>
+        </div>
+        <form action="/save" method="POST" name="nova-opcao">
+            <div class="form-group">
+                <input type="text" class="form-control" id="opcao" value="" name="opcao">                
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">OK</button>
+        </form>        
+    </div>
+</div>

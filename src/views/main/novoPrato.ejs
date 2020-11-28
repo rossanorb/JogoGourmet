@@ -1,0 +1,18 @@
+<%- contentFor('body') %>
+
+<div class="row justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-7 text-center" style="margin-top: 30vh;">
+        <div class="jumbotron">
+            <h3>Qual o prato você pensou ?</h3>
+        </div>
+
+        <form action="/nova-opcao" method="GET" name="nova-opcao">
+            <div class="form-group">
+                <input type="text" class="form-control" id="nome_prato" value="" name="nome_prato">
+                <input type="hidden" class="form-control" id="cid" value="<%= cid %>" name="cid">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">OK</button>
+        </form>
+
+    </div>
+</div>
