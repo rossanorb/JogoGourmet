@@ -107,9 +107,10 @@ exports.save = (request, response) => {
     let opcao = request.body.opcao;
     let nome_prato = request.body.nome_prato;
     let ref = request.body.ref;
+    let optref = request.body.optref;
     let cid = request.body.cid;
   
-    db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [opcao, cid, null, ref], function(err) {
+    db.run('INSERT INTO pratos (prato, n, s, ref, optref) VALUES (?, ?, ?, ?, ?)', [opcao, cid, null, ref, optref], function(err) {
         if (err) {
             return console.log(err.message);
         }
@@ -117,7 +118,7 @@ exports.save = (request, response) => {
         let idOption = this.lastID;        
 
         // altera referencia de Lasanha para italiano        
-        db.run('UPDATE pratos SET ref = ? WHERE id = ?', [idOption, cid]);
+        db.run('UPDATE pratos SET ref = ?, optref = ? WHERE id = ?', [idOption, 'n', cid]);
 
         db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [nome_prato, null, null, idOption], function(err) {
             if (err) {
@@ -125,13 +126,12 @@ exports.save = (request, response) => {
             }
             
             let pratoId = this.lastID;
-            console.log(`A row has been inserted with id ${pratoId}`);
             db.run('UPDATE pratos SET s = ? WHERE id = ?', [pratoId, idOption]);
 
         });
 
 
-        db.run('UPDATE pratos SET s = ? WHERE id = ?', [pratoId, ref]);
+        // db.run(`UPDATE pratos SET ${optref} = ? WHERE id = ? `, [pratoId, ref]);
 
 
     });
