@@ -99,6 +99,47 @@ exports.novaOpcao = (request, response) => {
     });
 }
 
+// exports.save = (request, response) => {
+
+//     let opcao = request.body.opcao;
+//     let nome_prato = request.body.nome_prato;
+//     let ref = request.body.ref;
+//     let optref = request.body.optref;
+//     let cid = request.body.cid;
+    
+//     db.run('INSERT INTO pratos (prato, n, s, ref, optref) VALUES (?, ?, ?, ?, ?)', [opcao, cid, null, ref, optref], function (err) {
+//         if (err) {
+//             return console.log(err.message);
+//         }
+
+//         let idOption = this.lastID;
+
+//         db.run('UPDATE pratos SET ref = ?, optref = ? WHERE id = ?', [idOption, 'n', cid]);
+
+//         db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [nome_prato, null, null, idOption], function (err) {
+//             if (err) {
+//                 return console.log(err.message);
+//             }
+
+//             let pratoId = this.lastID;
+//             db.run('UPDATE pratos SET s = ? WHERE id = ? ', [pratoId, idOption]);
+
+//         });
+        
+//         let sql = '';
+//         if (optref == 's') {
+//             sql = 'UPDATE pratos SET s = ? WHERE id = ? ';
+//         } else {
+//             sql = 'UPDATE pratos SET n = ? WHERE id = ? ';
+//         }
+
+//         db.run(sql, [idOption, ref]);
+
+//         return response.redirect('/')
+//     });
+
+// }
+
 exports.save = (request, response) => {
 
     let opcao = request.body.opcao;
@@ -116,7 +157,7 @@ exports.save = (request, response) => {
 
         db.run('UPDATE pratos SET ref = ?, optref = ? WHERE id = ?', [idOption, 'n', cid]);
 
-        db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [nome_prato, null, null, idOption], function (err) {
+        db.run('INSERT INTO pratos (prato, n, s, ref, optref ) VALUES (?, ?, ?, ?, ?)', [nome_prato, null, null, idOption, 's'], function (err) {
             if (err) {
                 return console.log(err.message);
             }
@@ -125,15 +166,9 @@ exports.save = (request, response) => {
             db.run('UPDATE pratos SET s = ? WHERE id = ? ', [pratoId, idOption]);
 
         });
-        
-        let sql = '';
-        if (optref == 's') {
-            sql = 'UPDATE pratos SET s = ? WHERE id = ? ';
-        } else {
-            sql = 'UPDATE pratos SET n = ? WHERE id = ? ';
-        }
 
-        db.run(sql, [idOption, ref]);
+        
+
 
         return response.redirect('/')
     });
