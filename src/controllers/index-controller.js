@@ -93,6 +93,8 @@ exports.novaOpcao = (request, response) => {
         return response.render('main/novaOpcao', {
             layout: 'layouts/default',
             cprato: row.prato,
+            ref: row.ref,
+            cid: request.query.cid,
             nome_prato: request.query.nome_prato            
         });
 
@@ -100,11 +102,37 @@ exports.novaOpcao = (request, response) => {
 }
 
 exports.save = (request, response) => {
-    return response.redirect('/')
+
+    let opcao = request.body.opcao;
+    let nome_prato = request.body.nome_prato;
+    let ref = request.body.ref;
+    let cid = request.body.cid;
+  
+    db.run('INSERT INTO pratos (prato, n, s, ref) VALUES (?, ?, ?, ?)', [opcao, cid, null, ref], function(err) {
+        if (err) {
+            return console.log(err.message);
+        }
+        // get the last insert id
+        console.log(`A row has been inserted with rowid ${this.lastID}`);
+        let idOption = this.lastID;
+
+        // altera referencia de Lasanha para italiano        
+        db.run('UPDATE pratos SET ref = ? WHERE id = ?', [idOption, cid]);    
+        
+
+
+
+    });
+
+    return response.render('main/acertei', {
+        layout: 'layouts/default'        
+    })
+
+    // return response.redirect('/')
 }
 
 exports.acertei = (request, response) => {
-    return response.render('main/acertei', {        
+    return response.render('main/acertei', {
         layout: 'layouts/default'        
     })     
 
