@@ -131,7 +131,7 @@ exports.save = (request, response) => {
         });
 
 
-        // db.run(`UPDATE pratos SET ${optref} = ? WHERE id = ? `, [pratoId, ref]);
+        db.run(`UPDATE pratos SET ${optref} = ? WHERE id = ? `, [idOption, ref]);
 
 
     });
