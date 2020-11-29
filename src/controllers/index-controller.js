@@ -24,9 +24,7 @@ exports.proximo = (request, response) => {
         id = nao;
     }
 
-    console.log(`id: ${id}`);
-
-    // acertou ?
+     // acertou ?
     if (!id && ref && option == 's') {
         return response.redirect('/acertei')
     }
