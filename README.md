@@ -1,6 +1,6 @@
 # rodar ' npm install ' antes de executar
 
-# node versino 8.12.0
+# node version 8.12.0
 # npm version 6.4.1
 
 # rodar npm run start
